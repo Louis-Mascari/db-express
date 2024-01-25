@@ -12,6 +12,7 @@ const pool = new Pool({
 });
 
 app.get('/friends', async (req, res) => {
+    console.log('made it here');
     try {
       console.log('Request received for /friends'); // Add this line
       const result = await pool.query('SELECT * FROM friends');
