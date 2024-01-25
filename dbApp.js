@@ -2,7 +2,7 @@ const express = require('express');
 const { Client } = require('pg');
 
 const app = express();
-const port = 3001;
+const port = 3010;
 
 // PostgreSQL configuration
 const connectionString = "postgres://postgres:your_new_password@localhost:5432/friendsdb";
