@@ -23,6 +23,18 @@ pool.connect()
     process.exit(1);
   });
 
+const mongoose = require('mongoose')
+mongoose.set('strictQuery', false)
+
+console.log('connecting to', config.MONGODB_URI)
+mongoose.connect(config.MONGODB_URI)
+.then(() => {
+  console.log('connected to MongoDB')
+})
+.catch((error) => {
+  console.log('error connecting to MongoDB:', error.message)
+})
+
 // Define a route for the root path ("/") to fetch data from the "friends" table
 app.get('/', async (req, res) => {
   try {
