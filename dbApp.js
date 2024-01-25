@@ -1,31 +1,36 @@
 const express = require('express');
-const { Pool } = require('pg');
+const { Client } = require('pg');
 
 const app = express();
 const port = 3001;
 
-const pool = new Pool({
-  user: 'postgres',
-  host: 'localhost',
-  database: 'friendsdb',
-  port: 5432,
+// PostgreSQL configuration
+const connectionString = "postgres://postgres:your_new_password@localhost:5432/friendsdb";
+const pgClient = new Client(connectionString);
+
+// Connect to PostgreSQL
+pgClient.connect()
+  .then(() => {
+    console.log('Connected to PostgreSQL');
+  })
+  .catch((error) => {
+    console.error('Error connecting to PostgreSQL:', error);
+    process.exit(1);
+  });
+
+// Define a route for the root path ("/") to fetch data from the "friends" table
+app.get('/', async (req, res) => {
+  try {
+    const result = await pgClient.query('SELECT * FROM friends');
+    res.json(result.rows);
+  } catch (error) {
+    console.error('Error querying database:', error);
+    res.status(500).send('Internal Server Error');
+  }
 });
 
-app.get('/friends', (req, res) => {
-    // console.log('made it here');
-    // try {
-    //   console.log('Request received for /friends'); // Add this line
-    //   const result = await pool.query('SELECT * FROM friends');
-    //   res.json(result.rows);
-    // } catch (error) {
-    //   console.error('Error querying database:', error);
-    //   res.status(500).send('Internal Server Error');
-    // }
-    res.send('This is my friends list!')
-  });
-  
 
-// Start the Express server
+// Start the server
 app.listen(port, () => {
-  console.log(`Server is running on ${port}`);
+  console.log(`Server is running on http://localhost:${port}`);
 });
