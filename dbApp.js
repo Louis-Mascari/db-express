@@ -1,15 +1,20 @@
 const express = require('express');
-const { Client } = require('pg');
+const { Pool } = require('pg');
 
 const app = express();
 const port = 3010;
 
 // PostgreSQL configuration
-const connectionString = "postgres://postgres:your_new_password@localhost:5432/friendsdb";
-const pgClient = new Client(connectionString);
+const pool = new Pool({
+  host: 'localhost',
+  port: 5432,
+  database: 'friendsdb',
+  user: 'postgres',
+  password: 'pass'
+})
 
 // Connect to PostgreSQL
-pgClient.connect()
+pool.connect()
   .then(() => {
     console.log('Connected to PostgreSQL');
   })
@@ -21,7 +26,7 @@ pgClient.connect()
 // Define a route for the root path ("/") to fetch data from the "friends" table
 app.get('/', async (req, res) => {
   try {
-    const result = await pgClient.query('SELECT * FROM friends');
+    const result = await pool.query('SELECT * FROM friends');
     res.json(result.rows);
   } catch (error) {
     console.error('Error querying database:', error);
