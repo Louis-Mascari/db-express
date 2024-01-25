@@ -1,7 +1,7 @@
 const express = require('express');
 const { Pool } = require('pg');
 const config = require('./utils/config')
-
+const LuckyNumber = require('./models/luckyNumber.js');
 const app = express();
 
 // PostgreSQL configuration
@@ -46,6 +46,15 @@ app.get('/', async (req, res) => {
   }
 });
 
+app.get('/lucky', async (req, res) => {
+  try {
+    const result = await LuckyNumber.find({});
+    res.json(result);
+  } catch (error) {
+    console.error('Error querying mongoDB:', error);
+    res.status(500).send('Test Internal Server Error');
+  }
+});
 
 // Start the server
 app.listen(config.PORT, () => {
