@@ -11,17 +11,17 @@ const pool = new Pool({
   port: 5432,
 });
 
-// Express route to get a list of friends
 app.get('/friends', async (req, res) => {
     try {
-      // Query the database
+      console.log('Request received for /friends'); // Add this line
       const result = await pool.query('SELECT * FROM friends');
       res.json(result.rows);
     } catch (error) {
-      console.error('Error querying database:', error); // Log the error
+      console.error('Error querying database:', error);
       res.status(500).send('Internal Server Error');
     }
-});
+  });
+  
 
 // Start the Express server
 app.listen(port, () => {
