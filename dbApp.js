@@ -1,8 +1,8 @@
 const express = require('express');
 const { Pool } = require('pg');
+const config = require('./utils/config')
 
 const app = express();
-const port = 3010;
 
 // PostgreSQL configuration
 const pool = new Pool({
@@ -48,6 +48,6 @@ app.get('/', async (req, res) => {
 
 
 // Start the server
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
+app.listen(config.PORT, () => {
+  console.log(`Server is running`);
 });
